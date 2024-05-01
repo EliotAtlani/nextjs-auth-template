@@ -36,6 +36,7 @@ export async function createUser(
         provider: "email",
         firstname: validatedFields.data.firstname,
         lastname: validatedFields.data.lastname,
+        image: process.env.DEFAULT_PICTURE_URL ?? "",
       },
     });
 

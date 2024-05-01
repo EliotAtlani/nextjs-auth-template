@@ -8,11 +8,13 @@ import { db } from "./src/lib/Prisma.db";
 
 import { comparePwd } from "@/actions/user/comparePwd";
 import { getUserFromDb } from "@/actions/user/getUserFromDb";
+import { updateLastLoginTime } from "@/actions/user/updateLastLoginTime";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/signin",
   },
+
   providers: [
     Credentials({
       async authorize(credentials) {
@@ -26,31 +28,46 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const user = await getUserFromDb(email);
           if (!user) return null;
           const passwordMatch = await comparePwd(password, user.password ?? "");
-          if (passwordMatch) return user as unknown as User;
+          if (passwordMatch) {
+            //Update lastLogin time
+            await updateLastLoginTime(email);
+            return user as unknown as User;
+          }
         }
         console.log("Invalid credentials");
         return null;
       },
     }),
-    Google,
+    Google({
+      profile(profile) {
+        return { role: profile.role ?? "user", ...profile };
+      },
+    }),
   ],
 
   callbacks: {
     async signIn({ account, profile }) {
       if (account?.provider === "google") {
-        const { email } = profile as Profile;
+        const { email, picture, name } = profile as Profile;
         // Check if user exists in the database
         let dbUser = await getUserFromDb(email as string);
 
         if (!dbUser) {
+          const [firstname, lastname] = (name as string).split(" ");
+
           // Create user in the database
           dbUser = await db.user.create({
             data: {
               email: email as string,
               provider: account?.provider,
               providerId: account?.providerAccountId,
+              image: picture as string,
+              firstname: firstname as string,
+              lastname: lastname as string,
             },
           });
+        } else {
+          await updateLastLoginTime(email as string);
         }
       }
       return true;
@@ -59,17 +76,46 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       console.log("TOKEN", token);
       if (token) {
         //@ts-ignore
-        session.name = token.name;
+        session.firstname = token.firstname;
+        //@ts-ignore
+        session.lastname = token.lastname;
         //@ts-ignore
         session.email = token.email;
+        //@ts-ignore
+        session.role = token.role;
+        //@ts-ignore
+        session.image = token.image;
       }
 
       return session;
     },
-    async jwt({ token, user }) {
-      console.log("USER2", user);
+    async jwt({ token, user, profile }) {
+      console.log("USER", user);
+      console.log("PROFILE", profile);
       if (user) {
-        return { ...token, name: user.name, email: user.email };
+        let firstname = "";
+        let lastname = "";
+        if (user.name) {
+          [firstname, lastname] = (user.name as string).split(" ");
+          //@ts-ignore
+        } else if (user?.firstname && user.lastname) {
+          //@ts-ignore
+
+          firstname = user.firstname;
+          //@ts-ignore
+
+          lastname = user.lastname;
+        }
+
+        return {
+          email: user.email,
+          //@ts-ignore
+          role: user.role,
+          firstname,
+          //@ts-ignore
+          image: user.picture ?? user.image,
+          lastname,
+        };
       }
       return token;
     },
