@@ -8,11 +8,12 @@ import { useFormState } from "react-dom";
 import { SignInGoogle } from "./signinGoogle";
 
 import { SubmitButton } from "../buttons/submit-btn";
+import PasswordInput from "../input/password-input";
+import Logo from "../logo";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authenticate } from "@/lib/actions";
-
 export function LoginForm() {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
 
@@ -48,6 +49,7 @@ export function LoginForm() {
     <div className="w-full h-screen lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[350px] gap-6">
+          <Logo />
           <div className="grid gap-2 text-center">
             <h1 className="text-3xl font-bold">Login</h1>
             <p className="text-balance text-muted-foreground">
@@ -76,7 +78,7 @@ export function LoginForm() {
                     Forgot your password?
                   </Link>
                 </div>
-                <Input id="password" type="password" required />
+                <PasswordInput id={"password"} />
               </div>
               {error && (
                 <>
@@ -113,7 +115,7 @@ export function LoginForm() {
           alt="Image"
           width="1920"
           height="1080"
-          className="h-full w-full object-cover dark:brightness-[0.8] dark:grayscale"
+          className="h-full w-full object-cover "
         />
       </div>
     </div>

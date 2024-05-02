@@ -13,7 +13,14 @@ const Page = async () => {
   }
 
   return (
-    <div className="w-full h-screen flex items-center">
+    <div
+      className="w-full h-screen flex items-center bg-primary "
+      style={{
+        backgroundImage: "url('/test.jpeg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <SignUpForm />
     </div>
   );

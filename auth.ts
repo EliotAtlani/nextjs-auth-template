@@ -25,7 +25,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data;
 
-          const user = await getUserFromDb(email);
+          const user = await getUserFromDb(email, "email");
           if (!user) return null;
           const passwordMatch = await comparePwd(password, user.password ?? "");
           if (passwordMatch) {
@@ -50,7 +50,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account?.provider === "google") {
         const { email, picture, name } = profile as Profile;
         // Check if user exists in the database
-        let dbUser = await getUserFromDb(email as string);
+        let dbUser = await getUserFromDb(email as string, "google");
 
         if (!dbUser) {
           const [firstname, lastname] = (name as string).split(" ");

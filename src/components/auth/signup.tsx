@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -9,12 +10,15 @@ import { SignInGoogle } from "./signinGoogle";
 
 import { SubmitButton } from "../buttons/submit-btn";
 import FormError from "../errors/form-error";
+import PasswordInput from "../input/password-input";
+import Logo from "../logo";
 
 import { createUser } from "@/actions/user/createUser";
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -64,6 +68,7 @@ export function SignUpForm() {
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
+        <Logo />
         <CardTitle className="text-xl">Sign Up</CardTitle>
         <CardDescription>
           Enter your information to create an account
@@ -97,7 +102,7 @@ export function SignUpForm() {
               <Label htmlFor="password" className="mt-2">
                 Password
               </Label>
-              <Input id="password" type="password" />
+              <PasswordInput id={"password"} />
             </div>
 
             <FormError errors={error} />
@@ -116,13 +121,15 @@ export function SignUpForm() {
 
           <SignInGoogle text="Sign in with Google" />
         </div>
-        <div className="mt-4 text-center text-sm">
+      </CardContent>
+      <CardFooter>
+        <div className="mt-4 text-center text-sm w-full">
           Already have an account?{" "}
           <Link href="/signin" className="underline">
             Sign in
           </Link>
         </div>
-      </CardContent>
+      </CardFooter>
     </Card>
   );
 }
