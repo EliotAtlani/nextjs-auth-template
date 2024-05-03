@@ -13,6 +13,7 @@ export async function createUser(
   const validatedFields = signInSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
     firstname: formData.get("firstname"),
     lastname: formData.get("lastname"),
   });

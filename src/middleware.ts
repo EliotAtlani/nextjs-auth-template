@@ -11,7 +11,6 @@ export async function middleware(req: NextRequest) {
     req,
     secret: process.env.AUTH_SECRET,
   } as unknown as GetTokenParams);
-  console.log("tokenDD", token);
 
   if (!token) {
     return NextResponse.redirect(new URL("/signin", req.nextUrl));
@@ -25,5 +24,5 @@ export async function middleware(req: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/", "/test"],
+  matcher: ["/dashboard"],
 };

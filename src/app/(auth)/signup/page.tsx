@@ -9,7 +9,7 @@ const Page = async () => {
   const session = (await auth()) as User;
   //Navigate to dashboard if user is signed in
   if (session?.user) {
-    redirect("/");
+    redirect("/dashboard");
   }
 
   return (

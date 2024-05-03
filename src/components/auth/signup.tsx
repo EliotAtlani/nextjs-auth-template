@@ -13,7 +13,7 @@ import FormError from "../errors/form-error";
 import PasswordInput from "../input/password-input";
 import Logo from "../logo";
 
-import { createUser } from "@/actions/user/createUser";
+import { createUser } from "@/actions/user/post/createUser";
 import {
   Card,
   CardContent,
@@ -44,12 +44,20 @@ export function SignUpForm() {
 
     try {
       setError(null);
+      if (e.target.password.value !== e.target["confirm-password"].value) {
+        setError(JSON.stringify({ p: ["Passwords do not match"] }));
+        return;
+      }
 
       // Introduce a delay of 1 second
       await new Promise((resolve) => setTimeout(resolve, 500));
       const form = new FormData();
       form.append("email", e.target.email.value);
       form.append("password", e.target.password.value);
+      if (e.target.password.value !== e.target["confirm-password"].value) {
+        setError(JSON.stringify({ p: ["Passwords do not match"] }));
+        return;
+      }
       form.append("firstname", e.target["first-name"].value);
       form.append("lastname", e.target["last-name"].value);
 
@@ -103,6 +111,12 @@ export function SignUpForm() {
                 Password
               </Label>
               <PasswordInput id={"password"} />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="password" className="mt-2">
+                Confirm your password
+              </Label>
+              <PasswordInput id={"confirm-password"} />
             </div>
 
             <FormError errors={error} />

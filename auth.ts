@@ -6,15 +6,14 @@ import { z } from "zod";
 
 import { db } from "./src/lib/Prisma.db";
 
-import { comparePwd } from "@/actions/user/comparePwd";
-import { getUserFromDb } from "@/actions/user/getUserFromDb";
-import { updateLastLoginTime } from "@/actions/user/updateLastLoginTime";
+import { getUserFromDb } from "@/actions/user/get/getUserFromDb";
+import { updateLastLoginTime } from "@/actions/user/patch/updateLastLoginTime";
+import { comparePwd } from "@/actions/user/post/comparePwd";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/signin",
   },
-
   providers: [
     Credentials({
       async authorize(credentials) {
@@ -42,6 +41,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       profile(profile) {
         return { role: profile.role ?? "user", ...profile };
       },
+      authorization: {
+        params: {
+          prompt: "select_account",
+        },
+      },
     }),
   ],
 
@@ -54,6 +58,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (!dbUser) {
           const [firstname, lastname] = (name as string).split(" ");
+
+          console.log("Creating user in the database");
+          console.log(picture);
 
           // Create user in the database
           dbUser = await db.user.create({
@@ -73,7 +80,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return true;
     },
     async session({ token, session }) {
-      console.log("TOKEN", token);
+      let role = "user";
+      //Role
+      const dbUser = await getUserFromDb(token.email as string, "google");
+
+      if (dbUser) {
+        role = dbUser.role;
+      }
+
       if (token) {
         //@ts-ignore
         session.firstname = token.firstname;
@@ -82,16 +96,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         //@ts-ignore
         session.email = token.email;
         //@ts-ignore
-        session.role = token.role;
+        session.role = role;
         //@ts-ignore
         session.image = token.image;
       }
 
       return session;
     },
-    async jwt({ token, user, profile }) {
-      console.log("USER", user);
-      console.log("PROFILE", profile);
+    async jwt({ token, user }) {
       if (user) {
         let firstname = "";
         let lastname = "";
@@ -120,7 +132,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
     redirect() {
-      return "/";
+      return "/dashboard";
     },
   },
 });

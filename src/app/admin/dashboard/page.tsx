@@ -1,28 +1,29 @@
 import { User } from "@prisma/client";
-import React from "react";
+import React, { Suspense } from "react";
+
+import Loading from "./loading";
 
 import { auth } from "../../../../auth";
 
-import { SignOutBtn } from "@/components/buttons/sign-out-btn";
+import getAllUsers from "@/actions/user/get/getUsers";
+import { AdminDashboard } from "@/components/admin/dashboard/dashboard-admin";
 
-const AdminDashboard = async () => {
+const Page = async () => {
   const session = (await auth()) as unknown as User;
 
-  if (session.role != "admin") {
-    return <h1> 404 - Not authorized</h1>;
-  }
+  if (!session) return;
+
+  const users = await getAllUsers();
+
+  console.log(users);
+
   return (
     <div>
-      <h1>Admin Dashboard</h1>
-      <h2>
-        {" "}
-        Welcome {session.firstname} {session.lastname}
-      </h2>
-      <h3> {session.email}</h3>
-      <h4> {session.role}</h4>
-      <SignOutBtn />
+      <Suspense fallback={<Loading />}>
+        <AdminDashboard users={users} />
+      </Suspense>
     </div>
   );
 };
 
-export default AdminDashboard;
+export default Page;

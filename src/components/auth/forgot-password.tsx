@@ -8,7 +8,7 @@ import { useFormState } from "react-dom";
 import { SubmitButton } from "../buttons/submit-btn";
 import Logo from "../logo";
 
-import { askResetPassword } from "@/actions/user/askResetPassword";
+import { askResetPassword } from "@/actions/user/resetPwd/askResetPassword";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";

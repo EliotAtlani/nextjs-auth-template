@@ -1,6 +1,6 @@
 "use server";
 
-import { sendEmailResetPassword } from "../email/sendEmailResetPassword";
+import { sendEmailResetPassword } from "../../email/sendEmailResetPassword";
 
 import { db } from "@/lib/Prisma.db";
 import { generateRandomToken } from "@/lib/utils";

@@ -10,7 +10,7 @@ const page = async () => {
 
   //Navigate to dashboard if user is signed in
   if (session?.user) {
-    redirect("/");
+    redirect("/dashboard");
   }
 
   return (

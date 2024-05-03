@@ -10,7 +10,7 @@ import PasswordInput from "../input/password-input";
 import Logo from "../logo";
 import { useToast } from "../ui/use-toast";
 
-import { verifyTokenResetPassword } from "@/actions/user/verifyTokenResetPassword";
+import { verifyTokenResetPassword } from "@/actions/user/resetPwd/verifyTokenResetPassword";
 import {
   Card,
   CardContent,
