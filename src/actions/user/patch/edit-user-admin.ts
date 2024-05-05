@@ -16,10 +16,11 @@ export const EditUserAdmin = async (data: Partial<User>) => {
         role: data.role,
       },
     });
+    console.log("User updated successfully");
     revalidateTag("users");
     return true;
   } catch (error) {
     console.log(error);
-    return false;
+    return error;
   }
 };

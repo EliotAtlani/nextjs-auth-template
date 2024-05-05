@@ -20,7 +20,7 @@ export function AdminDashboard({ users }: { users: User[] | undefined }) {
           className="flex items-center justify-center"
         >
           <CardHeader className="pb-4 flex items-center justify-center">
-            <CardDescription>Number of users</CardDescription>
+            <CardDescription>Total number of users</CardDescription>
             <CardTitle className="text-4xl flex items-center text-primary ">
               {users?.length}
               <UserIcon className="font-bold ml-2" size={30} />
@@ -56,7 +56,7 @@ export function AdminDashboard({ users }: { users: User[] | undefined }) {
         </Card>
       </div>
 
-      <TabUserTable users={users} />
+      <TabUserTable users={users} limit={true} />
     </main>
   );
 }

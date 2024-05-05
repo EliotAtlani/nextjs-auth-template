@@ -73,7 +73,7 @@ export const sendEmailResetPassword = async (email: string, token: string) => {
   try {
     console.log(process.env.NODE_ENV);
     const { data, error } = await resend.emails.send({
-      from: "Eliot Website <eliot-test.com>",
+      from: "Eliot Website <onboarding@resend.dev>",
       to: [email],
       subject: "Reset your password",
       html: htmlTemplate,

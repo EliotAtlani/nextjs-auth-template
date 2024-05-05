@@ -17,7 +17,6 @@ export async function askResetPassword(
     const user = await db.user.findFirst({
       where: {
         email,
-        provider: "email",
       },
     });
     if (!user) {

@@ -13,7 +13,7 @@ export default async function Layout({
 }>) {
   const session = (await auth()) as unknown as User;
 
-  if (session.role != "admin") {
+  if (session?.role != "admin") {
     return <NotAuthorized />;
   }
   return (

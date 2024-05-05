@@ -1,7 +1,8 @@
+"use client";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import React from "react";
-const Logo = () => {
+const Logo = ({ size = 150 }: { size?: number }) => {
   const { theme, systemTheme } = useTheme();
 
   const currentTheme = theme === "system" ? systemTheme : theme;
@@ -10,8 +11,8 @@ const Logo = () => {
       <Image
         src={currentTheme === "dark" ? "/logo-dark.png" : "/logo-light.png"}
         alt="logo"
-        width={150}
-        height={150}
+        width={size as number}
+        height={size as number}
       />
     </div>
   );

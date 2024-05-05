@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 
@@ -34,9 +35,6 @@ export function ResetPassword({ token }: { token: string }) {
   const [error, setError] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  console.log("state", state);
-  console.log("error", error);
-
   const handleSubmit = async (e: any) => {
     setLoading(true);
     e.preventDefault();
@@ -50,6 +48,7 @@ export function ResetPassword({ token }: { token: string }) {
       form.append("password", e.target.password.value);
       form.append("token", token);
       await formAction(form);
+      redirect("/signin");
     } catch (err) {
       console.error(err);
     } finally {
@@ -71,7 +70,9 @@ export function ResetPassword({ token }: { token: string }) {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <Logo />
+        <Link href="/">
+          <Logo />
+        </Link>
         <CardTitle className="text-2xl">Reset your password</CardTitle>
         <CardDescription>
           Enter your email below to login to your account.

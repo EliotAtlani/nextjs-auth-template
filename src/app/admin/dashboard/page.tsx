@@ -15,8 +15,6 @@ const Page = async () => {
 
   const users = await getAllUsers();
 
-  console.log(users);
-
   return (
     <div>
       <Suspense fallback={<Loading />}>
