@@ -25,6 +25,7 @@ model User {
   createdAt          DateTime             @default(now())
   lastLogin          DateTime             @default(now())
   role               String               @default("user")
+  onboarded          Boolean              @default(false)
   PasswordResetToken PasswordResetToken[]
 }
 
