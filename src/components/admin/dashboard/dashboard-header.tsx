@@ -106,7 +106,6 @@ const DashboardHeader = ({ session }: { session: User }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-
           <DropdownMenuItem className="px-0 py-0">
             <SignOutBtn />
           </DropdownMenuItem>

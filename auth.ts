@@ -24,7 +24,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data;
 
-          const user = await getUserFromDb(email, "email");
+          const user = await getUserFromDb(email, ["email"]);
           if (!user) return null;
           const passwordMatch = await comparePwd(password, user.password ?? "");
           if (passwordMatch) {
@@ -54,7 +54,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account?.provider === "google") {
         const { email, picture, name } = profile as Profile;
         // Check if user exists in the database
-        let dbUser = await getUserFromDb(email as string, "google");
+        let dbUser = await getUserFromDb(email as string, ["google"]);
 
         if (!dbUser) {
           const [firstname, lastname] = (name as string).split(" ");
@@ -81,11 +81,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async session({ token, session }) {
       let role = "user";
+      let onboarded = false;
       //Role
-      const dbUser = await getUserFromDb(token.email as string, "google");
+      const dbUser = await getUserFromDb(token.email as string, [
+        "google",
+        "email",
+      ]);
 
       if (dbUser) {
         role = dbUser.role;
+        onboarded = dbUser.onboarded;
       }
 
       if (token) {
@@ -99,6 +104,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.role = role;
         //@ts-ignore
         session.image = token.image;
+        //@ts-ignore
+        session.onboarded = onboarded;
       }
 
       return session;

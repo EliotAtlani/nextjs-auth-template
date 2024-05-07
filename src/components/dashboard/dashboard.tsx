@@ -264,11 +264,9 @@ export function Dashboard({ session }: { session: User }) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
+
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem className="px-0 py-0">
                 <SignOutBtn />
               </DropdownMenuItem>
             </DropdownMenuContent>

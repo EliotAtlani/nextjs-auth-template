@@ -24,9 +24,21 @@ model User {
   providerId         String               @default("")
   createdAt          DateTime             @default(now())
   lastLogin          DateTime             @default(now())
-  role               String               @default("user")
+  role               Role                 @default(student)
   onboarded          Boolean              @default(false)
   PasswordResetToken PasswordResetToken[]
+  userProfile        UserProfile?
+  enterprise         Enterprise?
+
+  // Add the subscription field
+  subscription   Subscriptions? @relation(fields: [subscriptionId], references: [title])
+  subscriptionId String?
+}
+
+enum Role {
+  student
+  enterprise
+  admin
 }
 
 model PasswordResetToken {
@@ -38,4 +50,31 @@ model PasswordResetToken {
 
   // Define the relationship with the User model
   user User @relation(fields: [email], references: [email])
+}
+
+model Subscriptions {
+  title       String   @id @unique
+  price       Float
+  features    String[]
+  no_features String[]
+  User        User[]
+}
+
+model UserProfile {
+  id        Int     @id @default(autoincrement())
+  user      User    @relation(fields: [userEmail], references: [email])
+  userEmail String  @unique
+  job       String?
+  country   String?
+  cv        String?
+}
+
+model Enterprise {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  websiteUrl  String?
+  logoUrl     String?
+  user        User    @relation(fields: [userEmail], references: [email])
+  userEmail   String  @unique
 }
