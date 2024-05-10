@@ -1,3 +1,4 @@
+import { Subscriptions } from "@prisma/client";
 import { Session } from "next-auth";
 
 export type User = Session & {
@@ -27,6 +28,7 @@ export type StepProps = {
 
 export type StepFourProps = StepProps & {
   postData: () => void;
+  subscriptions: Subscriptions[];
 };
 export type onBoardingForm = {
   country: string;

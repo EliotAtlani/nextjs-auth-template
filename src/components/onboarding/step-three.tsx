@@ -71,7 +71,11 @@ const Step3 = ({
         </form>
       </CardContent>
       <CardFooter className="flex justify-between mt-4">
-        <Button type="button" onClick={prevStep} className="bg-foreground">
+        <Button
+          type="button"
+          onClick={prevStep}
+          className="bg-foreground text-background"
+        >
           Prev step
         </Button>
         <Button type="button" onClick={nextStep} disabled={!cvFile}>

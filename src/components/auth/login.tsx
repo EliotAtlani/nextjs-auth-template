@@ -17,6 +17,8 @@ import { authenticate } from "@/lib/actions";
 export function LoginForm() {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
 
+  console.log("e", errorMessage);
+
   const [error, setError] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -25,8 +27,6 @@ export function LoginForm() {
     setLoading(true);
 
     try {
-      setError(null);
-
       // Introduce a delay of 1 second
       await new Promise((resolve) => setTimeout(resolve, 100));
       const form = new FormData();
@@ -45,6 +45,7 @@ export function LoginForm() {
     setError(errorMessage);
   }, [errorMessage]);
 
+  console.log("error", error);
   return (
     <div className="w-full h-screen lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
       <div className="flex items-center justify-center py-12">

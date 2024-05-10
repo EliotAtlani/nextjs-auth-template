@@ -17,7 +17,7 @@ const SubscriptionCard = ({
   return (
     <Card
       className={cn(
-        "w-[300px] min-h-[400px]",
+        "w-[300px] min-h-[400px] border-muted-foreground",
         selectedSubscription == title ? "bg-primary" : ""
       )}
     >
@@ -59,7 +59,7 @@ const SubscriptionCard = ({
           onClick={() => setSelectedSubscription(title)}
         >
           {" "}
-          Choose
+          {selectedSubscription === title ? "Selected" : "Select"}{" "}
         </Button>
       </CardHeader>
       <CardContent>

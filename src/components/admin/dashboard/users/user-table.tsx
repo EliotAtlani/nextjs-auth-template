@@ -97,6 +97,7 @@ export function UserTable({
               <TableHead>Firstname</TableHead>
               <TableHead>Lastname</TableHead>
               <TableHead>Role</TableHead>
+              <TableHead> Subscription</TableHead>
               <TableHead className="hidden md:table-cell">Created at</TableHead>
               <TableHead className="hidden md:table-cell">Last login</TableHead>
               <TableHead>
@@ -129,6 +130,11 @@ export function UserTable({
                     )}
                   >
                     {user.role}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <Badge className="uppercase text-center">
+                    {user.subscriptionId}
                   </Badge>
                 </TableCell>
                 <TableCell className="hidden md:table-cell">

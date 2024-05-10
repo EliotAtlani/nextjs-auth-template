@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { User } from "@prisma/client";
-import { useState } from "react";
+import { Subscriptions, User } from "@prisma/client";
+import { useEffect, useState } from "react";
 
 import ProcessingForm from "@/components/onboarding/processing-form";
 import ShowStep from "@/components/onboarding/show-step";
@@ -83,6 +83,28 @@ const Onboarding = ({ session }: { session: User }) => {
     }
   };
 
+  const [subscriptions, setSubscriptions] = useState<Subscriptions[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/subscriptions");
+        if (response.ok) {
+          const data = await response.json();
+          console.log("data", data);
+          setSubscriptions(data);
+        } else {
+          console.error("Failed to fetch subscriptions:", response.statusText);
+        }
+      } catch (error) {
+        console.error("An error occurred while fetching subscriptions:", error);
+      }
+    };
+
+    fetchData();
+    setLoading(false);
+  }, []);
+
   // Render step components based on the current step
   const renderStep = () => {
     switch (step) {
@@ -135,6 +157,7 @@ const Onboarding = ({ session }: { session: User }) => {
               formData={formData as onBoardingForm}
               nextStep={nextStep}
               postData={postData}
+              subscriptions={subscriptions}
             />
           </>
         );

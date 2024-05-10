@@ -20,7 +20,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const parsedCredentials = z
           .object({ email: z.string().email(), password: z.string().min(6) })
           .safeParse(credentials);
-        console.log("Credentials", credentials);
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data;
 
@@ -33,7 +32,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             return user as unknown as User;
           }
         }
-        console.log("Invalid credentials");
         return null;
       },
     }),

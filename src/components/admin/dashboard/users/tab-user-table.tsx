@@ -28,7 +28,7 @@ export function TabUserTable({
           <UserTable users={users} />
         </TabsContent>
         <TabsContent value="user">
-          <UserTable users={users?.filter((user) => user.role === "user")} />
+          <UserTable users={users?.filter((user) => user.role === "student")} />
         </TabsContent>
         <TabsContent value="admin">
           <UserTable users={users?.filter((user) => user.role === "admin")} />
